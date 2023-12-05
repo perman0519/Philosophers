@@ -6,7 +6,7 @@
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:29:58 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/04 19:00:05 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/05 18:25:39 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@ int	arg_init(t_arg *arg, int argc, char *argv[])
 	return (0);
 }
 
-int	t_share_mutex_init(t_share *t_share, int fork_num)
+int	t_share_mutex_init(t_share *t_share, int fork_count)
 {
 	int	i;
 
 	i = 0;
-	while (i < fork_num)
+	while (i < fork_count)
 	{
 		if (!pthread_mutex_init(&t_share->forks_mutex_array[i], NULL))
 			return (1);
@@ -45,55 +45,70 @@ int	t_share_mutex_init(t_share *t_share, int fork_num)
 	}
 	if (!pthread_mutex_init(&t_share->print_mutex, NULL))
 		return (1);
+	return (0);
 }
 
-t_share	*make_share_t(t_arg *arg)
+int	make_share_t(t_share *share_t, t_arg *arg)
 {
-	t_share			t_share;
 	struct timeval	tv;
 
+	if (share_t == NULL)
+		return (1);
 	if (gettimeofday(&tv, NULL) != 0)
-		return (NULL);
-	t_share.time_of_start = tv.tv_usec;
-	t_share.forks_array = (int *)malloc(sizeof(int) * arg->number_of_philo);
-	if (t_share.forks_array == NULL)
-		return (NULL);
-	t_share.forks_mutex_array = (pthread_mutex_t *) \
+		return (1);
+	share_t->time_of_start = tv.tv_usec;
+	share_t->forks_array = (int *)malloc(sizeof(int) * arg->number_of_philo);
+	share_t->forks_mutex_array = (pthread_mutex_t *) \
 				malloc(sizeof(pthread_mutex_t) * arg->number_of_philo);
-	if (t_share.forks_mutex_array == NULL)
+	if (share_t->forks_array == NULL)
 	{
-		free(t_share.forks_array);
-		return (NULL);
+		free(share_t);
+		return (1);
 	}
-	t_share.print = 0;
-
-	return (&t_share);
+	if (share_t->forks_mutex_array == NULL)
+	{
+		free(share_t);
+		free(share_t->forks_array);
+		return (1);
+	}
+	share_t->print = 0;
+	t_share_mutex_init(share_t, arg->number_of_philo);
+	return (0);
 }
 
-t_philo	*make_philo_t(t_arg *arg, int philo_num)
+t_philo	*make_philo_t(t_philo *philo_t, t_arg *arg, \
+						t_share *share_t, int philo_num)
 {
-	t_philo	philo_t;
-
-	philo_t.number = philo_num;
-	pthread_create(&philo_t.thread, NULL, NULL, NULL);
-	philo_t.time_to_die = 0;
-	philo_t.eating_count = 0;
-	philo_t.arg_t = arg;
-//    t_philo.t_share =
+	philo_t->id = philo_num;
+	pthread_create(&(philo_t->thread), NULL, do_thread_main, (void *)philo_t);
+	philo_t->time_to_die = 0;
+	philo_t->eating_count = 0;
+	philo_t->arg_t = arg;
+	philo_t->share_t = share_t;
+	return (philo_t);
 }
 
-int	philo_init(t_philo *philo_array, t_arg *arg)
+int	philo_init(t_philo *(philo_array)[], t_arg *arg)
 {
-	int	i;
+	t_share	*share_t;
+	int		i;
 
 	i = 0;
-	philo_array = (t_philo *)malloc(sizeof(t_philo) * \
+	share_t = (t_share *)malloc(sizeof(t_share));
+	if (make_share_t(share_t, arg))
+		return (1);
+	*philo_array = (t_philo *)malloc(sizeof(t_philo) * \
 							arg->number_of_philo);
 	if (philo_array == NULL)
+	{
+		free(share_t);
 		return (1);
+	}
 	while (i < arg->number_of_philo)
 	{
-		philo_array[i] = *make_philo_t(arg, i);
+		make_philo_t(&((*philo_array)[i]), arg, share_t, i);
+		printf("philo init %d\n", (*philo_array)[i].id);
 		i++;
 	}
+	return (0);
 }

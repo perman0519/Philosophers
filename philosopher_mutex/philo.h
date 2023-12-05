@@ -6,7 +6,7 @@
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:30:45 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/04 18:46:37 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/05 18:26:07 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct s_share
 typedef struct s_philo
 {
 	pthread_t	thread;
-	int			number;
+	int			id;
 	t_arg		*arg_t;
 	t_share		*share_t;
 	int			eating_count;
@@ -54,5 +54,7 @@ int			arg_init(t_arg *arg, int argc, char *argv[]);
 // libft
 long long	ft_atoi(const char *str);
 void		print_error(int errn);
+int			philo_init(t_philo *(philo_array)[], t_arg *arg);
+void		*do_thread_main(void *arg);
 
 #endif

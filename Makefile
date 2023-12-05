@@ -6,7 +6,7 @@ SRC_DIR	=	./philosopher_mutex
 NAME	=	philo
 CC		=	gcc
 CFLAGS	=	-Wall -Wextra -Werror
-SRC		=	test.c philo_init.c phil_needed.c
+SRC		=	test.c philo_init.c philo_util.c philo_thread.c
 SRC		:= $(addprefix $(SRC_DIR)/, $(SRC))
 OBJ		=	$(SRC:.c=.o)
 

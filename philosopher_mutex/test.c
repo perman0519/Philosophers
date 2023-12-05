@@ -6,11 +6,61 @@
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 18:43:25 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/04 18:43:33 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/05 17:59:10 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+// int	main(int argc, char *argv[])
+// {
+// 	int				errn;
+// 	t_arg			arg_t;
+// 	t_philo			*philosopher_array;
+
+// 	philosopher_array = NULL;
+// 	errn = arg_init(&arg_t, argc, argv);
+// 	if (errn)
+// 	{
+// 		print_error(errn);
+// 		return (errn);
+// 	}
+// 	errn = philo_init(philosopher_array, &arg_t);
+// 	if (errn)
+// 	{
+// 		print_error(errn);
+// 		return (errn);
+// 	}
+// 	return (errn);
+// }
+
+int	main(int argc, char *argv[])
+{
+	int				errn;
+	t_arg			arg_t;
+	t_philo			*philosopher_array;
+
+	philosopher_array = NULL;
+	errn = arg_init(&arg_t, argc, argv);
+	if (errn)
+	{
+		print_error(errn);
+		return (errn);
+	}
+	errn = philo_init(&philosopher_array, &arg_t);
+	if (errn)
+	{
+		print_error(errn);
+		return (errn);
+	}
+	printf("%p\n", &arg_t);
+	for (int i = 0; i < arg_t.number_of_philo; i++)
+	{
+		printf("philo maded: %d, %p\n", philosopher_array[i].id, \
+				philosopher_array[i].arg_t);
+	}
+	return (errn);
+}
 
 //int mails = 0;
 //pthread_mutex_t  mutex;
@@ -60,18 +110,3 @@
 //     return 0;
 // }
 
-int main(int argc, char *argv[])
-{
-	int				errn;
-	t_arg			arg_t;
-	t_share			share_t;
-	t_philo			*philosopher_array;
-
-	errn = arg_init(&arg_t, argc, argv);
-	if (errn)
-	{
-		print_error(errn);
-	//        return (errn);
-	}
-	return (errn);
-}

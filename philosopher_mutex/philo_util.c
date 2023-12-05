@@ -6,7 +6,7 @@
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 16:39:20 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/04 18:46:09 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/05 16:57:38 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void	print_error(int errn)
 {
 	if (errn == 1)
 		printf("Error: number of arguments.\n");
-	if (errn == 2)
+	else if (errn == 2)
+		printf("Error: Invalid arguments.\n");
+	else if (errn == 3)
 		printf("Error: Invalid arguments.\n");
 }
