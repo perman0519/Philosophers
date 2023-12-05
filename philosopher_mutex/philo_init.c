@@ -6,7 +6,7 @@
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:29:58 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/05 18:25:39 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/05 18:54:08 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ t_philo	*make_philo_t(t_philo *philo_t, t_arg *arg, \
 	philo_t->time_to_die = 0;
 	philo_t->eating_count = 0;
 	philo_t->arg_t = arg;
+	philo_t->left_fork = philo_num;
+	philo_t->right_fork = (philo_num + 1) % arg->number_of_philo;
 	philo_t->share_t = share_t;
 	return (philo_t);
 }

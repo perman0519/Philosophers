@@ -6,12 +6,18 @@
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:30:45 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/05 18:26:07 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/05 19:22:06 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
+
+# define FORK	1
+# define EAT	2
+# define SLEEP	3
+# define THINK	4
+# define DIE	5
 
 # include <pthread.h>
 # include <stdlib.h>
@@ -46,6 +52,8 @@ typedef struct s_philo
 	t_arg		*arg_t;
 	t_share		*share_t;
 	int			eating_count;
+	int			left_fork;
+	int			right_fork;
 	long		time_to_die;
 }			t_philo;
 
@@ -55,6 +63,10 @@ int			arg_init(t_arg *arg, int argc, char *argv[]);
 long long	ft_atoi(const char *str);
 void		print_error(int errn);
 int			philo_init(t_philo *(philo_array)[], t_arg *arg);
+
 void		*do_thread_main(void *arg);
+void		eat_philo(t_philo *philo, t_arg *arg);
+
+void		print_thread(t_philo *philo, t_arg *arg, int action);
 
 #endif
