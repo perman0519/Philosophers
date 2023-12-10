@@ -5,8 +5,10 @@ EOC			=   "\033[0;0m"
 SRC_DIR	=	./philosopher_mutex
 NAME	=	philo
 CC		=	gcc
-CFLAGS	=	-Wall -Wextra -Werror
-SRC		=	test.c philo_init.c philo_util.c philo_thread.c
+CFLAGS	=	-Wall -Wextra -Werror -fsanitize=thread
+SRC		=	main.c philo_init.c philo_util.c philo_thread.c \
+			get_time.c pass_time_thread.c eat_philo.c print_thread.c \
+			monitor.c start_philo_thread.c lock_all_alive.c
 SRC		:= $(addprefix $(SRC_DIR)/, $(SRC))
 OBJ		=	$(SRC:.c=.o)
 

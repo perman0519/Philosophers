@@ -6,34 +6,43 @@
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 17:36:46 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/05 19:46:45 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/10 21:15:30 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-
-
-void	sleep_philo(t_philo *philo, t_arg *arg)
+static void	add_must_eat_count(t_philo *philo, t_arg *arg, t_share *share)
 {
-
-}
-
-void	think_philo(t_philo *philo, t_arg *arg)
-{
-
+	if (philo->eating_count == arg->each_philo_must_eat)
+	{
+		pthread_mutex_lock(&(share->eat_count_mutex));
+		share->eat_count += 1;
+		pthread_mutex_unlock(&(share->eat_count_mutex));
+	}
 }
 
 void	*do_thread_main(void *argu)
 {
 	t_philo	*philo;
 	t_arg	*arg;
+	t_share	*share;
 
 	philo = (t_philo *)argu;
 	arg = philo->arg_t;
+	share = philo->share_t;
 	if (philo->id % 2 == 0)
 		usleep(1000);
-
-	eat_philo(philo, arg);
+	while (is_all_alive(share)) //모든 스레드가 살아있는동안
+	{
+		if (philo->id % 2 == 0)
+			eat_philo_even(philo, arg, share);
+		else
+			eat_philo_odd(philo, arg, share);
+		add_must_eat_count(philo, arg, share);
+		print_thread(philo, share, "is sleeping");
+		pass_time_thread(philo, arg->time_to_sleep);
+		print_thread(philo, share, "is thinking");
+	}
 	return (NULL);
 }

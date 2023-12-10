@@ -1,29 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_thread.c                                     :+:      :+:    :+:   */
+/*   lock_all_alive.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/05 19:19:31 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/10 21:09:27 by junssong         ###   ########.fr       */
+/*   Created: 2023/12/10 17:58:07 by junssong          #+#    #+#             */
+/*   Updated: 2023/12/10 18:04:43 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	print_thread(t_philo *philo, t_share *share, char *msg)
+int	is_all_alive(t_share *share)
 {
-	unsigned long	now;
+	int	all_alive;
 
-	now = get_time();
-	if (now == 0)
-		return (-1);
-	pthread_mutex_lock(&(share->print_mutex));
-	share->print = 1;
-	if (is_all_alive(share))
-		printf("%lu %d %s\n", now - philo->time_of_start, philo->id, msg);
-	share->print = 0;
-	pthread_mutex_unlock(&(share->print_mutex));
-	return (0);
+	pthread_mutex_lock(&(share->all_alive_mutex));
+	all_alive = share->all_alive;
+	pthread_mutex_unlock(&(share->all_alive_mutex));
+	return (all_alive);
 }

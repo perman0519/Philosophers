@@ -6,7 +6,7 @@
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 18:43:25 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/05 18:53:08 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/10 17:17:25 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,6 @@ int	main(int argc, char *argv[])
 	{
 		print_error(errn);
 		return (errn);
-	}
-	printf("%p\n", &arg_t);
-	for (int i = 0; i < arg_t.number_of_philo; i++)
-	{
-		printf("philo maded: %d, %d, %d, %p\n", philosopher_array[i].id, \
-				philosopher_array[i].left_fork, philosopher_array[i].right_fork, philosopher_array[i].arg_t);
 	}
 	return (errn);
 }

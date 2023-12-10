@@ -6,58 +6,56 @@
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 19:21:00 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/05 19:22:46 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/10 21:14:08 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	take_fork(t_philo *philo, t_arg *arg)
+int	eat_philo_even(t_philo *philo, t_arg *arg, t_share *share)
 {
-	if (philo->id % 2 == 0)
+	pthread_mutex_lock(&(share->forks_mutexes[philo->right_fork]));
+	share->forks_array[philo->right_fork] = 1;
+	print_thread(philo, share, "has taken a fork");
+	if (arg->number_of_philo != 1)
 	{
-		ptread_mutex_lock(philo->share_t->forks_array[philo->right_fork]);
-		philo->share_t->forks_array[philo->right_fork] = 1;
-		pthread_mutex_unlock(philo->share_t->forks_array[philo->right_fork]);
-		ptread_mutex_lock(philo->share_t->forks_array[philo->left_fork]);
-		philo->share_t->forks_array[philo->right_fork] = 1;
-		pthread_mutex_unlock(philo->share_t->forks_array[philo->left_fork]);
+		pthread_mutex_lock(&(share->forks_mutexes[philo->left_fork]));
+		share->forks_array[philo->left_fork] = 1;
+		print_thread(philo, share, "has taken a fork");
+		print_thread(philo, share, "is eating");
+		pthread_mutex_lock(&(philo->time_to_eat_mutex));
+		philo->time_to_eat = get_time();
+		pthread_mutex_unlock(&(philo->time_to_eat_mutex));
+		pass_time_thread(philo, arg->time_to_eat);
+		philo->eating_count++;
+		share->forks_array[philo->right_fork] = 0;
+		pthread_mutex_unlock(&(share->forks_mutexes[philo->right_fork]));
 	}
-	else
-	{
-		ptread_mutex_lock(philo->share_t->forks_array[philo->left_fork]);
-		philo->share_t->forks_array[philo->right_fork] = 1;
-		pthread_mutex_unlock(philo->share_t->forks_array[philo->left_fork]);
-		ptread_mutex_lock(philo->share_t->forks_array[philo->right_fork]);
-		philo->share_t->forks_array[philo->right_fork] = 1;
-		pthread_mutex_unlock(philo->share_t->forks_array[philo->right_fork]);
-	}
+	share->forks_array[philo->right_fork] = 0;
+	pthread_mutex_unlock(&(share->forks_mutexes[philo->left_fork]));
+	return (0);
 }
 
-void	put_fork(t_philo *philo, t_arg *arg)
+int	eat_philo_odd(t_philo *philo, t_arg *arg, t_share *share)
 {
-	if (philo->id % 2 == 0)
+	pthread_mutex_lock(&(share->forks_mutexes[philo->left_fork]));
+	share->forks_array[philo->left_fork] = 1;
+	print_thread(philo, share, "has taken a fork");
+	if (arg->number_of_philo != 1)
 	{
-		ptread_mutex_lock(philo->share_t->forks_array[philo->right_fork]);
-		philo->share_t->forks_array[philo->right_fork] = 0;
-		pthread_mutex_unlock(philo->share_t->forks_array[philo->right_fork]);
-		ptread_mutex_lock(philo->share_t->forks_array[philo->left_fork]);
-		philo->share_t->forks_array[philo->right_fork] = 0;
-		pthread_mutex_unlock(philo->share_t->forks_array[philo->left_fork]);
+		pthread_mutex_lock(&(share->forks_mutexes[philo->right_fork]));
+		share->forks_array[philo->right_fork] = 1;
+		print_thread(philo, share, "has taken a fork");
+		print_thread(philo, share, "is eating");
+		pthread_mutex_lock(&(philo->time_to_eat_mutex));
+		philo->time_to_eat = get_time();
+		pthread_mutex_unlock(&(philo->time_to_eat_mutex));
+		pass_time_thread(philo, arg->time_to_eat);
+		philo->eating_count++;
+		share->forks_array[philo->left_fork] = 0;
+		pthread_mutex_unlock(&(share->forks_mutexes[philo->left_fork]));
 	}
-	else
-	{
-		ptread_mutex_lock(philo->share_t->forks_array[philo->left_fork]);
-		philo->share_t->forks_array[philo->right_fork] = 0;
-		pthread_mutex_unlock(philo->share_t->forks_array[philo->left_fork]);
-		ptread_mutex_lock(philo->share_t->forks_array[philo->right_fork]);
-		philo->share_t->forks_array[philo->right_fork] = 0;
-		pthread_mutex_unlock(philo->share_t->forks_array[philo->right_fork]);
-	}
-}
-
-void	eat_philo(t_philo *philo, t_arg *arg)
-{
-	print_thread(philo, arg, FORK);
-	print_thread(philo, arg, EAT);
+	share->forks_array[philo->right_fork] = 0;
+	pthread_mutex_unlock(&(share->forks_mutexes[philo->right_fork]));
+	return (0);
 }

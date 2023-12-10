@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_thread.c                                     :+:      :+:    :+:   */
+/*   pass_time_thread.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/05 19:19:31 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/10 21:09:27 by junssong         ###   ########.fr       */
+/*   Created: 2023/12/10 17:07:06 by junssong          #+#    #+#             */
+/*   Updated: 2023/12/10 20:59:33 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	print_thread(t_philo *philo, t_share *share, char *msg)
+int	pass_time_thread(t_philo *philo, unsigned long wait_time)
 {
+	unsigned long	start;
 	unsigned long	now;
 
-	now = get_time();
-	if (now == 0)
-		return (-1);
-	pthread_mutex_lock(&(share->print_mutex));
-	share->print = 1;
-	if (is_all_alive(share))
-		printf("%lu %d %s\n", now - philo->time_of_start, philo->id, msg);
-	share->print = 0;
-	pthread_mutex_unlock(&(share->print_mutex));
+	start = get_time();
+	while (philo->share_t->all_alive)
+	{
+		now = get_time();
+		// printf("%lu\n", now-start);
+		if ((now - start) >= wait_time)
+			break ;
+		usleep(10);
+	}
 	return (0);
 }

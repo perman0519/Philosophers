@@ -6,7 +6,7 @@
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:30:45 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/05 19:22:06 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/10 19:21:10 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,37 +36,52 @@ typedef struct s_arg
 
 typedef struct s_share
 {
-	pthread_mutex_t	*forks_mutex_array;
+	pthread_mutex_t	*forks_mutexes;
 	int				*forks_array;
 	pthread_mutex_t	all_alive_mutex;
 	int				all_alive;
 	pthread_mutex_t	print_mutex;
 	int				print;
-	long			time_of_start;
+	pthread_mutex_t	eat_count_mutex;
+	int				eat_count;
 }			t_share;
 
 typedef struct s_philo
 {
-	pthread_t	thread;
-	int			id;
-	t_arg		*arg_t;
-	t_share		*share_t;
-	int			eating_count;
-	int			left_fork;
-	int			right_fork;
-	long		time_to_die;
+	int				id;
+	pthread_t		thread;
+	t_arg			*arg_t;
+	t_share			*share_t;
+	struct timeval	time;
+	int				eating_count;
+	int				left_fork;
+	int				right_fork;
+	unsigned long	time_of_start;
+	pthread_mutex_t	time_to_eat_mutex;
+	unsigned long	time_to_eat;
 }			t_philo;
 
-int			arg_init(t_arg *arg, int argc, char *argv[]);
+int				arg_init(t_arg *arg, int argc, char *argv[]);
 
 // libft
-long long	ft_atoi(const char *str);
-void		print_error(int errn);
-int			philo_init(t_philo *(philo_array)[], t_arg *arg);
+long long		ft_atoi(const char *str);
 
-void		*do_thread_main(void *arg);
-void		eat_philo(t_philo *philo, t_arg *arg);
+void			print_error(int errn);
+int				philo_init(t_philo *(philo_array)[], t_arg *arg);
 
-void		print_thread(t_philo *philo, t_arg *arg, int action);
+int				start_philo_thread(t_philo *(philos)[], \
+									t_share *share, t_arg *arg);
+int				monitor(t_philo *(philos)[], t_arg *arg, t_share *share);
+void			*do_thread_main(void *argu);
+
+int				is_all_alive(t_share *share);
+
+unsigned long	get_time(void);
+int				print_thread(t_philo *philo, t_share *share, char *msg);
+
+int				eat_philo_even(t_philo *philo, t_arg *arg, t_share *share);
+int				eat_philo_odd(t_philo *philo, t_arg *arg, t_share *share);
+
+int				pass_time_thread(t_philo *philo, unsigned long wait_time);
 
 #endif
