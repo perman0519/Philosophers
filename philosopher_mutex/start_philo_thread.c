@@ -6,13 +6,13 @@
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 17:24:34 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/10 20:44:41 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/11 16:04:40 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	start_philo_thread(t_philo *(philos)[], t_share *share, t_arg *arg)
+int	start_philo_thread(t_philo *(philos)[], t_arg *arg)
 {
 	int	i;
 
@@ -31,7 +31,7 @@ int	start_philo_thread(t_philo *(philos)[], t_share *share, t_arg *arg)
 		i++;
 	}
 	i = 0;
-	monitor(philos, arg, share);
+	monitor(philos, arg);
 	while (i < arg->number_of_philo)
 	{
 		if (pthread_join((*philos)[i].thread, NULL) != 0)

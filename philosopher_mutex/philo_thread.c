@@ -6,7 +6,7 @@
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 17:36:46 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/10 21:15:30 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/11 17:44:40 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ void	*do_thread_main(void *argu)
 	philo = (t_philo *)argu;
 	arg = philo->arg_t;
 	share = philo->share_t;
-	if (philo->id % 2 == 0)
+	if (philo->id % 2 != 0)
 		usleep(1000);
-	while (is_all_alive(share)) //모든 스레드가 살아있는동안
+	while (is_all_alive(share))
 	{
 		if (philo->id % 2 == 0)
 			eat_philo_even(philo, arg, share);
@@ -41,7 +41,7 @@ void	*do_thread_main(void *argu)
 			eat_philo_odd(philo, arg, share);
 		add_must_eat_count(philo, arg, share);
 		print_thread(philo, share, "is sleeping");
-		pass_time_thread(philo, arg->time_to_sleep);
+		pass_time_thread(arg->time_to_sleep);
 		print_thread(philo, share, "is thinking");
 	}
 	return (NULL);

@@ -6,7 +6,7 @@
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 17:23:40 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/10 20:23:43 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/11 16:06:14 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,7 @@ int	main(int argc, char *argv[])
 		print_error(errn);
 		return (errn);
 	}
-	errn = start_philo_thread(&philosopher_array, \
-								(philosopher_array[0]).share_t, &arg_t);
+	errn = start_philo_thread(&philosopher_array, &arg_t);
 	all_mutex_destory(&philosopher_array, &arg_t, philosopher_array[0].share_t);
 	free_all(&philosopher_array, philosopher_array[0].share_t);
 	return (errn);

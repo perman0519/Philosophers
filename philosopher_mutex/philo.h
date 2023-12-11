@@ -6,7 +6,7 @@
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:30:45 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/10 19:21:10 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/11 17:17:51 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,8 @@ long long		ft_atoi(const char *str);
 void			print_error(int errn);
 int				philo_init(t_philo *(philo_array)[], t_arg *arg);
 
-int				start_philo_thread(t_philo *(philos)[], \
-									t_share *share, t_arg *arg);
-int				monitor(t_philo *(philos)[], t_arg *arg, t_share *share);
+int				start_philo_thread(t_philo *(philos)[], t_arg *arg);
+int				monitor(t_philo *(philos)[], t_arg *arg);
 void			*do_thread_main(void *argu);
 
 int				is_all_alive(t_share *share);
@@ -82,6 +81,6 @@ int				print_thread(t_philo *philo, t_share *share, char *msg);
 int				eat_philo_even(t_philo *philo, t_arg *arg, t_share *share);
 int				eat_philo_odd(t_philo *philo, t_arg *arg, t_share *share);
 
-int				pass_time_thread(t_philo *philo, unsigned long wait_time);
+int				pass_time_thread(unsigned long wait_time);
 
 #endif

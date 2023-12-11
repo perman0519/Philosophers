@@ -6,25 +6,27 @@
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 17:07:06 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/10 20:59:33 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/11 18:52:26 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	pass_time_thread(t_philo *philo, unsigned long wait_time)
+int	pass_time_thread(unsigned long wait_time)
 {
 	unsigned long	start;
 	unsigned long	now;
+	unsigned long	left_time;
 
+	left_time = wait_time * 1000;
 	start = get_time();
-	while (philo->share_t->all_alive)
+	while (1)
 	{
 		now = get_time();
-		// printf("%lu\n", now-start);
 		if ((now - start) >= wait_time)
 			break ;
-		usleep(10);
+		usleep(left_time / 2);
+		left_time /= 2;
 	}
 	return (0);
 }

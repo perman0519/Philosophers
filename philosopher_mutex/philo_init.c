@@ -6,7 +6,7 @@
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:29:58 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/10 19:52:36 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/11 17:01:28 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,24 +39,22 @@ static int	t_share_mutex_init(t_share *t_share, int fork_count)
 	i = 0;
 	while (i < fork_count)
 	{
-		if (!pthread_mutex_init(&t_share->forks_mutexes[i], NULL))
+		if (pthread_mutex_init(&(t_share->forks_mutexes[i]), NULL))
 			return (1);
 		i++;
 	}
-	if (!pthread_mutex_init(&t_share->print_mutex, NULL))
+	if (pthread_mutex_init(&(t_share->print_mutex), NULL))
 		return (1);
-	if (!pthread_mutex_init(&t_share->eat_count_mutex, NULL))
+	if (pthread_mutex_init(&(t_share->eat_count_mutex), NULL))
+		return (1);
+	if (pthread_mutex_init(&(t_share->all_alive_mutex), NULL))
 		return (1);
 	return (0);
 }
 
 static int	make_share_t(t_share *share_t, t_arg *arg)
 {
-	struct timeval	tv;
-
 	if (share_t == NULL)
-		return (1);
-	if (gettimeofday(&tv, NULL) != 0)
 		return (1);
 	share_t->forks_array = (int *)malloc(sizeof(int) * arg->number_of_philo);
 	share_t->forks_mutexes = (pthread_mutex_t *) \
@@ -75,7 +73,8 @@ static int	make_share_t(t_share *share_t, t_arg *arg)
 	share_t->print = 0;
 	share_t->all_alive = 1;
 	share_t->eat_count = 0;
-	t_share_mutex_init(share_t, arg->number_of_philo);
+	if (t_share_mutex_init(share_t, arg->number_of_philo) == 1)
+		printf("is failed\n");
 	return (0);
 }
 
@@ -89,7 +88,7 @@ static int	make_philo_t(t_philo *philo_t, t_arg *arg, \
 	philo_t->left_fork = philo_num;
 	philo_t->right_fork = (philo_num + 1) % arg->number_of_philo;
 	philo_t->share_t = share_t;
-	if (pthread_mutex_init(&(philo_t->time_to_eat_mutex), NULL) != 0)
+	if (pthread_mutex_init(&(philo_t->time_to_eat_mutex), NULL))
 		return (1);
 	return (0);
 }
