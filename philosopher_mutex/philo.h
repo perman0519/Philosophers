@@ -6,7 +6,7 @@
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:30:45 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/11 17:17:51 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/12 17:27:56 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,6 @@ int				print_thread(t_philo *philo, t_share *share, char *msg);
 int				eat_philo_even(t_philo *philo, t_arg *arg, t_share *share);
 int				eat_philo_odd(t_philo *philo, t_arg *arg, t_share *share);
 
-int				pass_time_thread(unsigned long wait_time);
+int				pass_time_thread(t_share *share, unsigned long wait_time);
 
 #endif

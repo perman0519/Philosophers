@@ -6,7 +6,7 @@
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:29:58 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/11 17:01:28 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/12 18:02:50 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	arg_init(t_arg *arg, int argc, char *argv[])
 	arg->time_to_eat = ft_atoi(argv[3]);
 	arg->time_to_sleep = ft_atoi(argv[4]);
 	if (arg->number_of_philo <= 0 || arg->time_to_die <= 0 || \
-		arg ->time_to_sleep <= 0)
+		arg->time_to_eat <= 0 || arg ->time_to_sleep <= 0)
 		return (2);
 	if (argc == 6)
 	{
