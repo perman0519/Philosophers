@@ -6,7 +6,7 @@
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 17:36:46 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/16 14:40:42 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/16 14:52:08 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	*thread_main(void *argu)
 			break ;
 		add_must_eat_count(philo, arg, share);
 		print_thread(philo, share, "is sleeping");
-		pass_time_thread(share, arg->time_to_sleep);
+		usleep_thread(share, arg->time_to_sleep);
 		print_thread(philo, share, "is thinking");
 	}
 	return (NULL);

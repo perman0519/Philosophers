@@ -6,7 +6,7 @@
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:30:45 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/16 14:46:29 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/16 14:52:08 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,6 @@ unsigned long	get_time(void);
 int				is_all_alive(t_share *share);
 int				print_thread(t_philo *philo, t_share *share, char *msg);
 int				eat_philo(t_philo *philo, t_arg *arg, t_share *share);
-int				pass_time_thread(t_share *share, unsigned long wait_time);
+int				usleep_thread(t_share *share, unsigned long wait_time);
 
 #endif
