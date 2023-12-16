@@ -1,30 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   start_philo_thread.c                               :+:      :+:    :+:   */
+/*   start_threads.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 17:24:34 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/12 18:32:16 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/16 14:41:52 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	start_philo_thread(t_philo *(philos)[], t_arg *arg)
+int	start_threads(t_philo *(philos)[], t_arg *arg)
 {
-	int	i;
+	int				i;
+	unsigned long	now;
 
 	i = 0;
+	now = get_time();
 	while (i < arg->number_of_philo)
 	{
 		pthread_mutex_lock(&((*philos)[i].time_to_eat_mutex));
-		(*philos)[i].time_of_start = get_time();
-		(*philos)[i].time_to_eat = get_time();
+		(*philos)[i].time_of_start = now;
+		(*philos)[i].time_to_eat = now;
 		pthread_mutex_unlock(&((*philos)[i].time_to_eat_mutex));
 		if (pthread_create(&((*philos)[i].thread), \
-				NULL, do_thread_main, &((*philos)[i])) != 0)
+				NULL, thread_main, &((*philos)[i])) != 0)
 		{
 			return (-1);
 		}

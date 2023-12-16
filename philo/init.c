@@ -1,18 +1,52 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_init.c                                       :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:29:58 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/12 18:02:50 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/16 14:46:29 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	arg_init(t_arg *arg, int argc, char *argv[])
+static int	init_t_share_mutex(t_share *t_share, int fork_count);
+static int	make_share_t(t_share *share_t, t_arg *arg);
+static int	make_philo_t(t_philo *philo_t, t_arg *arg, \
+						t_share *share_t, int philo_num);
+
+int	init_philo(t_philo *(philo_array)[], t_arg *arg)
+{
+	t_share	*share_t;
+	int		i;
+
+	i = 0;
+	share_t = (t_share *)malloc(sizeof(t_share));
+	if (make_share_t(share_t, arg))
+		return (1);
+	*philo_array = (t_philo *)malloc(sizeof(t_philo) \
+					* arg->number_of_philo);
+	if (philo_array == NULL)
+	{
+		free(share_t);
+		return (1);
+	}
+	while (i < arg->number_of_philo)
+	{
+		if (make_philo_t(&((*philo_array)[i]), arg, share_t, i) != 0)
+		{
+			free (share_t);
+			free (philo_array);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	init_arg(t_arg *arg, int argc, char *argv[])
 {
 	if (argc != 5 && argc != 6)
 		return (1);
@@ -32,7 +66,7 @@ int	arg_init(t_arg *arg, int argc, char *argv[])
 	return (0);
 }
 
-static int	t_share_mutex_init(t_share *t_share, int fork_count)
+static int	init_t_share_mutex(t_share *t_share, int fork_count)
 {
 	int	i;
 
@@ -73,7 +107,7 @@ static int	make_share_t(t_share *share_t, t_arg *arg)
 	share_t->print = 0;
 	share_t->all_alive = 1;
 	share_t->eat_count = 0;
-	if (t_share_mutex_init(share_t, arg->number_of_philo) == 1)
+	if (init_t_share_mutex(share_t, arg->number_of_philo) == 1)
 		printf("is failed\n");
 	return (0);
 }
@@ -90,34 +124,5 @@ static int	make_philo_t(t_philo *philo_t, t_arg *arg, \
 	philo_t->share_t = share_t;
 	if (pthread_mutex_init(&(philo_t->time_to_eat_mutex), NULL))
 		return (1);
-	return (0);
-}
-
-int	philo_init(t_philo *(philo_array)[], t_arg *arg)
-{
-	t_share	*share_t;
-	int		i;
-
-	i = 0;
-	share_t = (t_share *)malloc(sizeof(t_share));
-	if (make_share_t(share_t, arg))
-		return (1);
-	*philo_array = (t_philo *)malloc(sizeof(t_philo) * \
-							arg->number_of_philo);
-	if (philo_array == NULL)
-	{
-		free(share_t);
-		return (1);
-	}
-	while (i < arg->number_of_philo)
-	{
-		if (make_philo_t(&((*philo_array)[i]), arg, share_t, i) != 0)
-		{
-			free (share_t);
-			free (philo_array);
-			return (1);
-		}
-		i++;
-	}
 	return (0);
 }

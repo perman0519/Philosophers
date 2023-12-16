@@ -6,18 +6,12 @@
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:30:45 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/12 17:27:56 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/16 14:46:29 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
-
-# define FORK	1
-# define EAT	2
-# define SLEEP	3
-# define THINK	4
-# define DIE	5
 
 # include <pthread.h>
 # include <stdlib.h>
@@ -61,26 +55,21 @@ typedef struct s_philo
 	unsigned long	time_to_eat;
 }			t_philo;
 
-int				arg_init(t_arg *arg, int argc, char *argv[]);
 
-// libft
+// util
 long long		ft_atoi(const char *str);
-
 void			print_error(int errn);
-int				philo_init(t_philo *(philo_array)[], t_arg *arg);
 
-int				start_philo_thread(t_philo *(philos)[], t_arg *arg);
+int				init_arg(t_arg *arg, int argc, char *argv[]);
+int				init_philo(t_philo *(philo_array)[], t_arg *arg);
+void			*thread_main(void *argu);
+int				start_threads(t_philo *(philos)[], t_arg *arg);
 int				monitor(t_philo *(philos)[], t_arg *arg);
-void			*do_thread_main(void *argu);
-
-int				is_all_alive(t_share *share);
 
 unsigned long	get_time(void);
+int				is_all_alive(t_share *share);
 int				print_thread(t_philo *philo, t_share *share, char *msg);
-
-int				eat_philo_even(t_philo *philo, t_arg *arg, t_share *share);
-int				eat_philo_odd(t_philo *philo, t_arg *arg, t_share *share);
-
+int				eat_philo(t_philo *philo, t_arg *arg, t_share *share);
 int				pass_time_thread(t_share *share, unsigned long wait_time);
 
 #endif

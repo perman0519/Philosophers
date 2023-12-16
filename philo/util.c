@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   phil_needed.c                                      :+:      :+:    :+:   */
+/*   util.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 16:39:20 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/05 16:57:38 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/16 14:34:46 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,22 @@ void	print_error(int errn)
 		printf("Error: Invalid arguments.\n");
 	else if (errn == 3)
 		printf("Error: Invalid arguments.\n");
+}
+
+int	is_all_alive(t_share *share)
+{
+	int	all_alive;
+
+	pthread_mutex_lock(&(share->all_alive_mutex));
+	all_alive = share->all_alive;
+	pthread_mutex_unlock(&(share->all_alive_mutex));
+	return (all_alive);
+}
+
+unsigned long	get_time(void)
+{
+	struct timeval	time;
+
+	gettimeofday(&time, NULL);
+	return (time.tv_sec * 1000 + (time.tv_usec / 1000));
 }

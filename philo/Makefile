@@ -2,15 +2,13 @@
 GREEN		=	"\033[0;32m"
 EOC			=   "\033[0;0m"
 #-------------------------------------------
-SRC_DIR	=	./philosopher_mutex
 NAME	=	philo
 CC		=	gcc
 CFLAGS2	=	-Wall -Wextra -Werror
 CFLAGS	=	-Wall -Wextra -Werror
-SRC		=	main.c philo_init.c philo_util.c philo_thread.c \
-			get_time.c pass_time_thread.c eat_philo.c print_thread.c \
-			monitor.c start_philo_thread.c lock_all_alive.c
-SRC		:= $(addprefix $(SRC_DIR)/, $(SRC))
+SRC		=	main.c init.c util.c thread_main.c \
+			pass_time_thread.c eat_philo.c print_thread.c \
+			monitor.c start_threads.c
 OBJ		=	$(SRC:.c=.o)
 
 all 	: $(NAME)
