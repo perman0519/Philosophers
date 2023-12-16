@@ -6,7 +6,7 @@
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 17:47:56 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/16 14:35:33 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/16 18:30:12 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	monitor(t_philo *(philos)[], t_arg *arg)
 			pthread_mutex_unlock(&(share->eat_count_mutex));
 		if (is_time_to_die(philos, arg, share))
 			return (0);
-		usleep(3000);
+		usleep(1000);
 	}
 	return (0);
 }
