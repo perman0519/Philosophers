@@ -6,7 +6,7 @@
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:30:45 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/16 14:52:08 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/16 15:55:56 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ typedef struct s_philo
 	pthread_mutex_t	time_to_eat_mutex;
 	unsigned long	time_to_eat;
 }			t_philo;
-
 
 // util
 long long		ft_atoi(const char *str);
