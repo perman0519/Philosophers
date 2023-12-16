@@ -7,7 +7,7 @@ CC		=	gcc
 CFLAGS2	=	-Wall -Wextra -Werror
 CFLAGS	=	-Wall -Wextra -Werror
 SRC		=	main.c init.c util.c thread_main.c \
-			pass_time_thread.c eat_philo.c print_thread.c \
+			usleep_thread.c eat_philo.c print_thread.c \
 			monitor.c start_threads.c
 OBJ		=	$(SRC:.c=.o)
 
