@@ -6,7 +6,7 @@
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 16:39:20 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/16 16:09:20 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/18 17:22:53 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ long long	ft_atoi(const char *str)
 		value = 10 * temp + (str[i++] - '0');
 		temp = value;
 	}
+	if ((str[i] != '\0' && !(str[i] >= '0' && str[i] <= '9')))
+		return (0);
 	return (sign * value);
 }
 
