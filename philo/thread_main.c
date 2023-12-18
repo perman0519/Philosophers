@@ -6,7 +6,7 @@
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 17:36:46 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/16 16:04:06 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/18 17:14:33 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	*thread_main(void *argu)
 	arg = philo->arg_t;
 	share = philo->share_t;
 	if (philo->id % 2 != 0)
-		usleep(2000);
+		usleep(1700);
 	while (is_all_alive(share))
 	{
 		eat_philo(philo, arg, share);

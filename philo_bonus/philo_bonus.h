@@ -6,7 +6,7 @@
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 15:30:45 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/16 17:32:42 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/18 17:10:52 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <sys/time.h>
-#include <signal.h>
+# include <signal.h>
 
 typedef struct s_arg
 {
@@ -33,12 +33,11 @@ typedef struct s_arg
 
 typedef struct s_share
 {
-	sem_t	*forks_sem;
-	int		*forks_array;
-	sem_t	*print_sem;
-	int		print;
-	sem_t	*eat_count_sem;
-	int		eat_count;
+	sem_t		*forks_sem;
+	sem_t		*print_sem;
+	sem_t		*eat_count_sem;
+	pthread_t	monitoring_thread;
+	t_arg		*arg;
 }			t_share;
 
 typedef struct s_philo
@@ -48,8 +47,6 @@ typedef struct s_philo
 	t_arg			*arg_t;
 	t_share			*share_t;
 	int				eating_count;
-	int				left_fork;
-	int				right_fork;
 	unsigned long	time_of_start;
 	sem_t			*alive_sem;
 	int				all_alive;
@@ -62,19 +59,19 @@ void			print_error(int errn);
 long long		ft_atoi(const char *str);
 char			*ft_itoa(int n);
 char			*ft_strjoin(char const *s1, char const *s2);
+size_t			ft_strlcpy(char *dst, const char *src, size_t dstsize);
 
 int				init_arg(t_arg *arg, int argc, char *argv[]);
 int				init_share_t(t_share *share, t_arg *arg);
 int				init_philo(t_philo *(philo_array)[], \
 							t_arg *arg, t_share *share);
-void			*thread_main(void *argu);
-int				start_threads(t_philo *(philos)[], t_arg *arg);
-int				monitor(t_philo *(philos)[], t_arg *arg);
+void			*process_main(void *argu);
+int				start_process(t_philo *(philos)[], t_arg *arg);
+void			*monitor(void *data);
 
 unsigned long	get_time(void);
-int				is_all_alive(t_share *share);
-int				print_thread(t_philo *philo, t_share *share, char *msg);
+int				print_process(t_philo *philo, t_share *share, char *msg);
 int				eat_philo(t_philo *philo, t_arg *arg, t_share *share);
-int				usleep_thread(t_share *share, unsigned long wait_time);
+int				usleep_process(unsigned long wait_time);
 
 #endif

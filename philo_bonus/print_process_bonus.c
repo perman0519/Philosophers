@@ -1,30 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   usleep_thread.c                                    :+:      :+:    :+:   */
+/*   print_process_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/10 17:07:06 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/16 16:35:23 by junssong         ###   ########.fr       */
+/*   Created: 2023/12/18 17:09:21 by junssong          #+#    #+#             */
+/*   Updated: 2023/12/18 17:11:01 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int	usleep_thread(t_share *share, unsigned long wait_time)
+int	print_process(t_philo *philo, t_share *share, char *msg)
 {
-	unsigned long	start;
-	unsigned long	left_time;
+	unsigned long	now;
 
-	start = get_time();
-	left_time = wait_time * 1000;
-	while (1)
+	sem_wait(share->print_sem);
+	now = get_time();
+	if (now == 0)
+		return (-1);
+	if (msg[3] == 'e')
 	{
-		if ((get_time() - start) >= wait_time || !is_all_alive(share))
-			return (0);
-		left_time *= 0.25;
-		usleep(left_time);
+		sem_wait(philo->time_to_eat_sem);
+		philo->time_to_eat = now;
+		sem_post(philo->time_to_eat_sem);
 	}
+	printf("%lu %d %s\n", now - philo->time_of_start, philo->id, msg);
+	if (msg[3] == 'd')
+		exit(1);
+	sem_post(share->print_sem);
 	return (0);
 }

@@ -1,20 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 17:23:40 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/16 17:25:41 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/18 17:10:20 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
 static void	destory_all_mutex(t_philo *(philos)[], t_arg *arg, t_share *share);
-static void	free_all(t_philo *(philos)[], t_share *share);
-static void	print_error(int errn);
 
 int	main(int argc, char *argv[])
 {
@@ -33,9 +31,9 @@ int	main(int argc, char *argv[])
 	errn = init_philo(&philosopher_array, &arg, &share);
 	if (errn)
 		return (errn);
-	errn = start_threads(&philosopher_array, &arg);
+	errn = start_process(&philosopher_array, &arg);
 	destory_all_mutex(&philosopher_array, &arg, &share);
-	free_all(&philosopher_array, &share);
+	free(philosopher_array);
 	return (errn);
 }
 
@@ -49,25 +47,17 @@ void	print_error(int errn)
 		printf("Error: init failed.\n");
 }
 
-void	destory_all_mutex(t_philo *(philos)[], t_arg *arg, t_share *share)
+static void	destory_all_mutex(t_philo *(philos)[], t_arg *arg, t_share *share)
 {
 	int	i;
 
 	i = 0;
 	while (i < arg->number_of_philo)
 	{
-		pthread_mutex_destroy(&((*philos)[i].time_to_eat_mutex));
-		pthread_mutex_destroy(&(share->forks_mutexes[i]));
+		sem_close((*philos)[i].time_to_eat_sem);
 		i++;
 	}
-	pthread_mutex_destroy(&(share->print_mutex));
-	pthread_mutex_destroy(&(share->all_alive_mutex));
-	pthread_mutex_destroy(&(share->eat_count_mutex));
-}
-
-void	free_all(t_philo *(philos)[], t_share *share)
-{
-	free(share->forks_sem);
-	free(share->forks_array);
-	free(*philos);
+	sem_close(share->forks_sem);
+	sem_close(share->print_sem);
+	sem_close(share->eat_count_sem);
 }

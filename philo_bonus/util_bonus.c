@@ -1,16 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util.c                                             :+:      :+:    :+:   */
+/*   util_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: junssong <junssong@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 16:39:20 by junssong          #+#    #+#             */
-/*   Updated: 2023/12/16 16:35:32 by junssong         ###   ########.fr       */
+/*   Updated: 2023/12/18 17:09:50 by junssong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
+
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
+size_t	ft_strlen(const char *s);
 
 long long	ft_atoi(const char *str)
 {
@@ -34,16 +37,6 @@ long long	ft_atoi(const char *str)
 		temp = value;
 	}
 	return (sign * value);
-}
-
-int	is_all_alive(t_share *share)
-{
-	int	all_alive;
-
-	pthread_mutex_lock(&(share->all_alive_mutex));
-	all_alive = share->all_alive;
-	pthread_mutex_unlock(&(share->all_alive_mutex));
-	return (all_alive);
 }
 
 unsigned long	get_time(void)
@@ -70,4 +63,42 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	ft_strlcpy(return_arr, s1, s1_len + 1);
 	ft_strlcpy(return_arr + s1_len, s2, s2_len + 1);
 	return (return_arr);
+}
+
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+{
+	size_t	i;
+	size_t	src_legth;
+
+	i = 0;
+	src_legth = ft_strlen(src);
+	if (dstsize == 0)
+		return (src_legth);
+	while (i < dstsize - 1)
+	{
+		if (src[i] != '\0')
+		{
+			dst[i] = src[i];
+			i++;
+		}
+		else
+		{
+			dst[i] = src[i];
+			return (src_legth);
+		}
+	}
+	dst[i] = '\0';
+	return (src_legth);
+}
+
+size_t	ft_strlen(const char *s)
+{
+	size_t	count;
+
+	count = 0;
+	while (*s++ != '\0')
+	{
+		++count;
+	}
+	return (count);
 }
